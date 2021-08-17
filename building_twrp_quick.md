@@ -51,15 +51,15 @@ This was a bit weird to figure out, but I think I got it right.  You'll want to 
 Add this below the other remotes defined at the top:
 
 ```
-    <remote name="klugman-device-tree"
-            fetch="https://github.com/bxlentpartyon/twrp_gts7lwifi"
-            review="https://github.com/bxlentpartyon/twrp_gts7lwifi"/>
+    <remote name="bxlentpartyon"
+            fetch="https://github.com/bxlentpartyon"
+            review="https://github.com/bxlentpartyon"/>
 ```
 
 And then this below the TeamWin android_bootable_recovery project:
 
 ```
-    <project path="device/samsung/gts7lwifi" name="twrp_gts7lwifi" remote="klugman-device-tree" revision="master"/>
+    <project path="device/samsung/gts7lwifi" name="twrp_gts7lwifi" remote="bxlentpartyon" revision="master"/>
 ```
 
 After that, I ran a `repo sync`, and was able to see that it created the `device/samsung` subdirectory in the root of my TWRP tree.
