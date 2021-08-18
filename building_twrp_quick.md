@@ -72,7 +72,7 @@ The moment of truth.
 
 ```
 . build/envsetup.sh
-lunch omni_gts7lwifi-eng
+lunch twrp_gts7lwifi-eng
 export ALLOW_MISSING_DEPENDENCIES=true
 mka recoveryimage
 ```
