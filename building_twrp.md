@@ -400,7 +400,7 @@ I created another subdirectory called recovery, and extracted this file there:
 
 ```
 mkdir recovery
-cp recovery.img.lz4
+cp recovery.img.lz4 recovery
 cd recovery
 lz4 -d recovery.img.lz4
 ```
@@ -425,7 +425,7 @@ Go back to wherever you extracted your `recovery.img`, and run the following com
 
 ```
 mkdir out
-<path_to_mkbootimg_repo>/unpack_bootimg --out out --boot_img recovery.img
+<path_to_mkbootimg_repo>/unpack_bootimg.py --out out --boot_img recovery.img
 ```
 
 You should now have the following files in your `out` directory:
@@ -495,7 +495,7 @@ You'll need to copy in the kernel you built, and the two device tree files that 
 cd twrp_gts7lwifi/prebuilt
 cp ../../gts7l/arch/arm64/boot/Image ./
 cp ../../recovery_dtbo ./
-cp ../../cp ../../dtb dtb/dtb.dtb
+cp ../../dtb dtb/dtb.dtb
 ```
 ### Modify various build files
 
@@ -613,20 +613,22 @@ git push klugman-device-tree HEAD
 
 ## Add your local device tree repo as a remote
 
-This was a bit weird to figure out, but I think I got it right.  You'll want to edit `.repo/manifests/twrp-extras.xml` like this:
+You'll want to make the file `.repo/local_manifests/gts7lwifi.xml` like this:
 
-Add this below the other remotes defined at the top:
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
 
-```
-    <remote name="klugman-device-tree"
-            fetch="file://<path_to_workarea>/klugman-device-tree"
-            review="file:///<path_to_workarea>/klugman-device-tree"/>
-```
+  <remote name="klugman-device-tree"
+          fetch="file://<path_to_workarea>/klugman-device-tree"
+          review="file:///<path_to_workarea>/klugman-device-tree"/>
 
-And then this below the TeamWin android_bootable_recovery project:
+  <project path="device/samsung/gts7lwifi"
+          name="twrp_gts7lwifi"
+          remote="klugman-device-tree"
+          revision="master"/>
 
-```
-    <project path="device/samsung/gts7lwifi" name="twrp_gts7lwifi" remote="klugman-device-tree" revision="master"/>
+</manifest>
 ```
 
 After that, I ran a `repo sync`, and was able to see that it created the `device/samsung` subdirectory in the root of my TWRP tree.
